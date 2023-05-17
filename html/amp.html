@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>F.Koch Audio Snapcast Client</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: Helvetica, sans-serif;
+			background-color: lightgray;
+			color: lightgray;
+		}
+
+		h2 {
+            grid-column: 1 / 12;
+            font-size: 2.3rem;
+            font-weight: bold;
+            text-align: center;
+            color: #07156d;
+         }
+
+		.header {
+			background-color: #04296d;
+			color: white;
+			text-align: center;
+			padding: 10px;
+			font-size: 2.8rem;
+			font-weight: bold;
+		}
+
+		.tile {
+			background-color: white;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+			width: 90%;
+			height: 60vh; /* Hier haben wir die Höhe auf 60vh gesetzt */
+			margin: auto; /* Hier haben wir margin auf auto gesetzt */
+			border-radius: 10px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-between;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+
+		.input-container {
+
+            margin-top: 5px;
+			display: grid;
+			grid-template-columns: repeat(11, 1fr);
+			grid-template-rows: 1fr 6fr 1fr;
+			grid-gap: 15px;
+			width:  calc(100% - 10px); /* passt die Breite der Buttons an */
+			height: calc(100% - 10px);
+
+		}
+
+		.input {
+			font-size: 1.2rem;
+			padding: 20px;
+			margin: 10px;
+			border-radius: 5px;
+			border: none;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+			width: 100%;
+			box-sizing: border-box;
+			border-color: black;
+		}
+
+		.button-container {
+
+            grid-column: 1/12;
+            grid-row:3;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-around;
+		}
+
+		.button {
+			background-color: #04296d;
+			color: white;
+			font-size: 1.8rem;
+			font-weight: bold; /* fügt fett hinzu */
+			border-radius: 5px;
+			padding: 10px 20px;
+
+			margin-left: 10px; /* ändern Sie den Wert von 0 auf 10px */
+			border: none;
+			cursor: pointer;
+			transition: background-color 0.3s ease-in-out;
+			width:  30%; /* passt die Breite der Buttons an */
+			height: 100%; /* passt die Breite der Buttons an */
+			text-align: center;
+		}
+
+		.button:hover {
+			background-color: #2C3E6F;
+		}
+
+		.slider {
+			-webkit-appearance: slider-vertical;
+			-moz-appearance: slider-vertical;
+			width: 100%;
+			height: 100%;
+		}
+
+        .slider-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .slider-label {
+            margin-bottom: 10px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #07156d;
+        }
+
+		.slider-value {
+			font-size: 18px;
+			text-align: center;
+			margin: 0;
+		}
+		.checkbox-container {
+
+			grid-row:    3;
+			align-items: center;
+            position: relative;
+		}
+	</style>
+</head>
+<body>
+	<div class="header">
+		F.Koch Audio Snapcast Client
+	</div>
+	<div class="tile">
+		<div class="input-container">
+			<h2>audio mixer</h2>
+			<div class="slider-container">
+				<label for="slider1" class="slider-label">31,25Hz</label>
+				<input type="range" class="slider" id="slider1" orient="vertical" min="-13" max="13" step="1" value="0" oninput="updateLabel(this, 'value1')">
+				<label for="slider1" class="slider-label" id="value1">0</label>
+			</div>
+			<div class="slider-container">
+				<label for="slider2" class="slider-label">62,5Hz</label>
+				<input type="range" class="slider" id="slider2" orient="vertical" min="-13" max="13" step="1" value="0" oninput="updateLabel(this, 'value2')">
+				<label for="slider2" class="slider-label" id="value2">0</label>
+			</div>
+			<div class="slider-container">
+				<label for="slider3" class="slider-label">125Hz</label>
+				<input type="range" class="slider" id="slider3" orient="vertical" min="-13" max="13" step="1" value="0" oninput="updateLabel(this, 'value3')">
+				<label for="slider3" class="slider-label" id="value3">0</label>
+			</div>
+			<div class="slider-container">
+				<label for="slider4" class="slider-label">250Hz</label>
+				<input type="range" class="slider" id="slider4" orient="vertical" min="-13" max="13" step="1" value="0" oninput="updateLabel(this, 'value4')">
+				<label for="slider4" class="slider-label" id="value4">0</label>
+			</div>
+			<div class="slider-container">
+				<label for="slider5" class="slider-label">500Hz</label>
+				<input type="range" class="slider" id="slider5" orient="vertical" min="-13" max="13" step="1" value="0" oninput="updateLabel(this, 'value5')">
+				<label for="slider5" class="slider-label" id="value5">0</label>
+			</div>
+			<div class="slider-container">
+				<label for="slider6" class="slider-label">1KHz</label>
+				<input type="range" class="slider" id="slider6" orient="vertical" min="-13" max="13" step="1" value="0" oninput="updateLabel(this, 'value6')">
+				<label for="slider6" class="slider-label" id="value6">0</label>
+			</div>
+			<div class="slider-container">
+				<label for="slider7" class="slider-label">2KHz</label>
+				<input type="range" class="slider" id="slider7" orient="vertical" min="-13" max="13" step="1" value="0" oninput="updateLabel(this, 'value7')">
+				<label for="slider7" class="slider-label" id="value7">0</label>
+			</div>
+			<div class="slider-container">
+				<label for="slider8" class="slider-label">4KHz</label>
+				<input type="range" class="slider" id="slider8" orient="vertical" min="-13" max="13" step="1" value="0" oninput="updateLabel(this, 'value8')">
+				<label for="slider8" class="slider-label" id="value8">0</label>
+			</div>
+			<div class="slider-container">
+				<label for="slider9" class="slider-label">8KHz</label>
+				<input type="range" class="slider" id="slider9" orient="vertical" min="-13" max="13" step="1" value="0" oninput="updateLabel(this, 'value9')">
+				<label for="slider9" class="slider-label" id="value9">0</label>
+			</div>
+			<div class="slider-container">
+				<label for="slider10" class="slider-label">16KHz</label>
+				<input type="range" class="slider" id="slider10" orient="vertical" min="-13" max="13" step="1" value="0" oninput="updateLabel(this, 'value10')">
+				<label for="slider10" class="slider-label" id="value10">0</label>
+			</div>
+			<div class="slider-container">
+				<label for="slider11" class="slider-label">volume</label>
+				<input type="range" class="slider" id="slider11" orient="vertical" min="0" max="100" step="5" value="0" oninput="updateLabel(this, 'value11')">
+				<label for="slider11" class="slider-label" id="value11">0</label>
+				<label for="muted" class="slider-label">mute</label>
+				<input type="checkbox" id="muted">
+			</div>
+			<div class="button-container">
+				<button class="button" onclick="window.location.href='/'">Back</button>
+				<button class="button" id="save-button" onclick="sendData()" >Save</button>
+			</div>
+		</div>
+	</div>
+	<script>
+		let socket = null;
+		function connect() {
+			socket = new WebSocket(`ws://${window.location.hostname}/ws`);
+			socket.onopen = function(event) {
+				console.log('Connection opened');
+				socket.send(JSON.stringify({"type": 6}));
+			};
+			socket.onmessage = function(event) {
+				console.log('Message Received', event.data);
+				var receivedJson = JSON.parse(event.data);
+				if (receivedJson.type === 5) { // überprüfe, ob der Typ des empfangenen Objekts 5 ist
+					var sliderValues = receivedJson.sliderValues;
+					for (var i = 0; i < sliderValues.length; i++) {
+						var slider = document.getElementById("slider" + (i + 1));
+						var label = document.getElementById("value" + (i + 1));
+						slider.value = sliderValues[i];
+						label.textContent = sliderValues[i];
+					}
+					var mutedCheckbox = document.getElementById("muted");
+					mutedCheckbox.checked = (receivedJson.muted === 1);
+				}
+			};
+			socket.onclose = function(event) {
+				console.log(`WebSocket closed with code ${event.code}. Reconnecting...`);
+				setTimeout(connect, 1000); // Versuche Verbindung in 1 Sekunde erneut aufzubauen
+			};
+		}
+		function sendData() {
+			var json = {
+				"type": 5,
+				"sliderValues": [
+					parseInt(document.getElementById("slider1").value),
+					parseInt(document.getElementById("slider2").value),
+					parseInt(document.getElementById("slider3").value),
+					parseInt(document.getElementById("slider4").value),
+					parseInt(document.getElementById("slider5").value),
+					parseInt(document.getElementById("slider6").value),
+					parseInt(document.getElementById("slider7").value),
+					parseInt(document.getElementById("slider8").value),
+					parseInt(document.getElementById("slider9").value),
+					parseInt(document.getElementById("slider10").value),
+					parseInt(document.getElementById("slider11").value),
+				],
+				"muted": document.getElementById("muted").checked ? 1 : 0
+			};
+			if (socket && socket.readyState === WebSocket.OPEN) {
+					socket.send(JSON.stringify(json));
+				} else {
+					console.log("WebSocket not connected. Trying to reconnect...");
+					setTimeout(connect, 1000); // Versuche Verbindung in 1 Sekunde erneut aufzubauen
+				}
+		}
+		connect();
+		function updateLabel(slider, labelId) {
+			document.getElementById(labelId).innerHTML = slider.value;
+		}
+	</script>
+</body>
+</html>

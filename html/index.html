@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>F.Koch Audio Snapcast Client</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: Helvetica, sans-serif;
+			background-color: lightgray;
+			color: lightgray;
+		}
+
+		h2 {
+            font-size: 2.3rem;
+            font-weight: bold;
+            color: #07156d;
+        }
+
+		.header {
+			background-color: #04296d;
+			color: white;
+			text-align: center;
+			padding: 10px;
+			font-size: 2.8rem;
+			font-weight: bold;
+		}
+
+		.tile {
+			background-color: white;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+			width: 70%;
+			height: 60vh; /* Hier haben wir die Höhe auf 60vh gesetzt */
+			margin: auto; /* Hier haben wir margin auf auto gesetzt */
+			padding: 10px;
+			border-radius: 10px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-between;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+
+		.button-container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-around;
+			width: 100%;
+			height: 100%;
+
+		}
+
+		.button {
+			background-color: #04296d;
+			color: white;
+			font-size: 1.8rem;
+			font-weight: bold; /* fügt fett hinzu */
+			border-radius: 5px;
+
+			margin: 10px; /* ändern Sie den Wert von 0 auf 10px */
+			border: none;
+			cursor: pointer;
+			transition: background-color 0.3s ease-in-out;
+			width:  calc(100% - 20px); /* passt die Breite der Buttons an */
+			height: calc(100% - 20px); /* passt die Breite der Buttons an */
+			text-align: center;
+
+		}
+
+
+
+		.button:hover {
+			background-color: #2C3E6F;
+		}
+	</style>
+</head>
+<body>
+	<div class="header">
+		F.Koch Audio Snapcast Client
+	</div>
+	<div class="tile">
+		<div class="button-container">
+			<h2>Menu</h2>
+			<button class="button" onclick="window.location.href='/wifi'">wifi setup</button>
+			<button class="button" onclick="window.location.href='/mqtt'">MQTT setup</button>
+			<button class="button" onclick="window.location.href='/amp'">Audio setup</button>
+		</div>
+	</div>
+</body>
+</html>

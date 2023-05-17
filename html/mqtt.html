@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>F.Koch Audio Snapcast Client</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: Helvetica, sans-serif;
+			background-color: lightgray;
+			color: lightgray;
+		}
+
+		h2 {
+			text-align: center;
+            font-size: 2.3rem;
+            font-weight: bold;
+            color: #07156d;
+        }
+
+		.label {
+			font-weight: bold;
+			color: #07156d;
+			margin-left: 10px; /* fügt 10px unteres margin hinzu */
+		}
+
+		.header {
+			background-color: #04296d;
+			color: white;
+			text-align: center;
+			padding: 10px;
+			font-size: 2.8rem;
+			font-weight: bold;
+		}
+
+		.tile {
+			background-color: white;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+			width: 70%;
+			height: 60vh; /* Hier haben wir die Höhe auf 60vh gesetzt */
+			margin: auto; /* Hier haben wir margin auf auto gesetzt */
+			padding: 10px;
+			border-radius: 10px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-between;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+
+		.input-container {
+			display: flex;
+			flex-direction: column;
+			align-items: left;
+			justify-content: space-around;
+			width:  calc(99% - 20px); /* passt die Breite der Buttons an */
+			height: 100%;
+
+		}
+
+		.input {
+			font-size: 1.2rem;
+			padding: 20px;
+			margin: 10px;
+			border-radius: 5px;
+			border: none;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+			width: 100%;
+			box-sizing: border-box;
+			border-color: black;
+		}
+
+		input[type="text"], input[type="password"] {
+			border: 1px solid lightgray;
+		}
+
+		.button-container {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-around;
+			width: 100%;
+			height: 12%;
+		}
+
+		.button {
+			background-color: #04296d;
+			color: white;
+			font-size: 1.8rem;
+			font-weight: bold; /* fügt fett hinzu */
+			border-radius: 5px;
+			padding: 10px 20px;
+
+			margin: 0px; /* ändern Sie den Wert von 0 auf 10px */
+			border: none;
+			cursor: pointer;
+			transition: background-color 0.3s ease-in-out;
+			width:  30%; /* passt die Breite der Buttons an */
+			height: 100%; /* passt die Breite der Buttons an */
+			text-align: center;
+		}
+
+
+
+		.button:hover {
+			background-color: #2C3E6F;
+		}
+	</style>
+</head>
+<body>
+	<div class="header">
+		F.Koch Audio Snapcast Client
+	</div>
+	<div class="tile">
+		<div class="input-container">
+			<h2>MQTT Configuration</h2>
+			<label for="host" class="label" >server URI:</label>
+			<input class="input" type="text" placeholder="mqtt server" id="host" >
+			<label for="pub" class="label" >publish:</label>
+			<input class="input" type="text" placeholder="publish" id="pub" >
+			<label for="sub" class="label" >subscribe:</label>
+			<input class="input" type="text" placeholder="subscribe" id="sub" >
+		</div>
+		<div class="button-container">
+			<button class="button" onclick="window.location.href='/'">Back</button>
+			<button class="button" onclick="saveMqttConfig()" >Save</button>
+		</div>
+	</div>
+	<script>
+		let socket = null;
+		function connect() {
+			socket = new WebSocket(`ws://${window.location.hostname}/ws`);
+			socket.onopen = function(event) {
+				console.log('Connection opened');
+				socket.send(JSON.stringify({"type": 4}));
+			};
+			socket.onmessage = function(event) {
+				console.log('Message Received', event.data);
+				const data = JSON.parse(event.data);
+				if (data.type === 4 && data.mqtt) {
+					const mqttData = data.mqtt;
+					document.getElementById("host").value = mqttData.server_uri;
+					document.getElementById("sub").value = mqttData.cmd_topic;
+					document.getElementById("pub").value = mqttData.state_topic;
+				}
+			};
+			socket.onclose = function(event) {
+				console.log(`WebSocket closed with code ${event.code}. Reconnecting...`);
+				setTimeout(connect, 1000); // Versuche Verbindung in 1 Sekunde erneut aufzubauen
+			};
+		}
+		function saveMqttConfig() {
+			const server_uri = document.getElementById("host").value;
+			const cmd_topic  = document.getElementById("sub").value;
+			const state_topic = document.getElementById("pub").value;
+			if (server_uri && cmd_topic && state_topic) {
+				const mqttConfig = {
+					"server_uri" : server_uri,
+					"cmd_topic"  : cmd_topic,
+					"state_topic": state_topic
+				};
+				const config = {
+					"type": 3,
+					"mqtt": mqttConfig
+				};
+				if (socket && socket.readyState === WebSocket.OPEN) {
+					socket.send(JSON.stringify(config));
+				} else {
+					console.log("WebSocket not connected. Trying to reconnect...");
+					setTimeout(connect, 1000); // Versuche Verbindung in 1 Sekunde erneut aufzubauen
+				}
+			} else {
+				alert("Please fill in all fields.");
+			}
+		}
+		connect();
+		</script>
+</body>
+</html>

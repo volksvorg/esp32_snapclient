@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>F.Koch Audio Snapcast Client</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: Helvetica, sans-serif;
+			background-color: lightgray;
+			color: lightgray;
+		}
+
+		h2 {
+			text-align: center;
+            font-size: 2.3rem;
+            font-weight: bold;
+            color: #07156d;
+        }
+
+        .label {
+			font-weight: bold;
+			color: #07156d;
+			margin-left: 10px; /* fügt 10px unteres margin hinzu */
+		}
+
+		.header {
+			background-color: #04296d;
+			color: white;
+			text-align: center;
+			padding: 10px;
+			font-size: 2.8rem;
+			font-weight: bold;
+		}
+
+		.tile {
+			background-color: white;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+			width: 70%;
+			height: 60vh; /* Hier haben wir die Höhe auf 60vh gesetzt */
+			margin: auto; /* Hier haben wir margin auf auto gesetzt */
+			padding: 10px;
+			border-radius: 10px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: space-between;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+
+		.input-container {
+			display: flex;
+			flex-direction: column;
+			align-items: left;
+			justify-content: space-around;
+			width:  calc(99% - 20px); /* passt die Breite der Buttons an */
+			height: 100%;
+
+		}
+
+		.input {
+			font-size: 1.2rem;
+			padding: 20px;
+			margin: 10px;
+			border-radius: 5px;
+			border: none;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+			width: 100%;
+			box-sizing: border-box;
+			border-color: black;
+		}
+
+		input[type="text"], input[type="password"] {
+			border: 1px solid lightgray;
+		}
+
+		.button-container {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-around;
+			width: 100%;
+			height: 12%;
+		}
+
+		.button {
+			background-color: #04296d;
+			color: white;
+			font-size: 1.8rem;
+			font-weight: bold; /* fügt fett hinzu */
+			border-radius: 5px;
+			padding: 10px 20px;
+
+			margin: 0px; /* ändern Sie den Wert von 0 auf 10px */
+			border: none;
+			cursor: pointer;
+			transition: background-color 0.3s ease-in-out;
+			width:  30%; /* passt die Breite der Buttons an */
+			height: 100%; /* passt die Breite der Buttons an */
+			text-align: center;
+		}
+
+
+
+		.button:hover {
+			background-color: #2C3E6F;
+		}
+	</style>
+</head>
+<body>
+	<div class="header">
+		F.Koch Audio Snapcast Client
+	</div>
+	<div class="tile">
+		<div class="input-container">
+			<h2>Wifi Configuration</h2>
+			<label for="ssid-dropdown" class="label" >SSID:</label>
+			<input class="input" type="text" placeholder="ssid" id="ssid-input">
+			<label for="password-input" class="label" >password:</label>
+			<input class="input" type="password" placeholder="password" id="password-input">
+			<label for="dns-name-input" class="label" >device name:</label>
+			<input class="input" type="text" placeholder="device name" id="dns-name-input">
+		</div>
+		<div class="button-container">
+			<button class="button" onclick="window.location.href='/'">Back</button>
+			<button class="button" onclick="saveWifiConfig()">Save</button>
+		</div>
+	</div>
+	<script>
+		function saveWifiConfig() {
+			var ssid = document.getElementById("ssid-input").value;
+			var password = document.getElementById("password-input").value;
+			var deviceName = document.getElementById("dns-name-input").value;
+
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					// Response received, do something with it if necessary
+				}
+			};
+			xhttp.open("POST", "/post", true);
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhttp.send("ssid=" + ssid + "&password=" + password + "&deviceName=" + deviceName);
+		}
+	</script>
+</body>
+</html>

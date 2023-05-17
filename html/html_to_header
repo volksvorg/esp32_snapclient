@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Check if input file exists
+if [ ! -f "$1" ]; then
+  echo "Error: Input file '$1' does not exist."
+  exit 1
+fi
+
+# Define file names and paths
+input_file="$1"
+input_file_name="$(basename "$input_file" .html)"
+header_file_name="${input_file_name}_html.h"
+header_file_path="/home/florian/eclipse-workspace/esp32-snapclient/components/webserver/include/${header_file_name}"
+
+# Convert input file to hex using xxd and save to temporary file
+xxd -i "$input_file" > "${input_file_name}_tmp.h"
+
+# Rename struct, variable, and add const unsigned char *index_html_end
+sed -i "s/unsigned char ${input_file_name}_html\[\]/unsigned char ${input_file_name}_html_start\[\]/g" "${input_file_name}_tmp.h"
+#sed -i "s/unsigned int ${input_file_name}_html_len =/unsigned int ${input_file_name}_html_len/g" "${input_file_name}_tmp.h"
+echo "const unsigned char *${input_file_name}_html_end = ${input_file_name}_html_start + sizeof(${input_file_name}_html_start);" >> "${input_file_name}_tmp.h"
+
+# Rename temporary file to header file and copy to target directory
+mv "${input_file_name}_tmp.h" "${header_file_path}"
